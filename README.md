@@ -1,2 +1,2 @@
 # Parakeet
- Code for running the drone project
+Code related to my ongoing AI drone project

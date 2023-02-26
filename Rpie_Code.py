@@ -30,7 +30,7 @@ def Init_Controller():
         joystick.init()
 
     # Load button keys from 'ps4_keys.json' file
-    with open(os.path.join("ps4_keys.json"), 'r+') as file:
+    with open(os.path.join("Parakeet\ps4_keys.json"), 'r+') as file:
         button_keys = json.load(file)
 
     # Initialize 'analog_keys' list with default values for analog keys
@@ -45,7 +45,7 @@ def Init_Arduino():
     global arduinoData
 
     # Initialize 'arduinoData' serial connection with specified port and baud rate
-    arduinoData= serial.Serial('COM3', 115200, timeout= 2)
+    arduinoData= serial.Serial('COM4', 115200, timeout= 2)
 
     # Wait for 'Start' signal from Arduino to start communication
     while True:
@@ -93,7 +93,7 @@ def send_package(package):
 
     # Send each command in the package and append the response to the 'answer' list
     for i in range(len(package)):
-        cmd = code[i]
+        cmd = code + code[i] + '\r'
         arduinoData.write(cmd.encode())
         answer.append(arduinoData.readline().decode().rstrip())
     print(answer)

@@ -93,7 +93,7 @@ def send_package(package):
 
     # Send each command in the package and append the response to the 'answer' list
     for i in range(len(package)):
-        cmd = code + code[i] + '\r'
+        cmd = code[i] + str(package[i]) + '\r'
         arduinoData.write(cmd.encode())
         answer.append(arduinoData.readline().decode().rstrip())
     print(answer)

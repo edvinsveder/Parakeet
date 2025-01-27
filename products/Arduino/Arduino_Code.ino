@@ -13,12 +13,39 @@ By the act of copying, use, setup or assembly, the user accepts all resulting li
 */
 
 #include <Wire.h>
-float RatePitch, RateRoll, RateYaw;
-float RateCalibrationPitch, RateCalibrationRoll, RateCalibrationYaw;
+typedef struct
+{
+  float RatePitch;
+  float RateRoll;
+  float RateYaw;
+} Mpu_Rate_Values_t;
+
+typedef struct
+{
+  float RateCalibrationPitch;
+  float RateCalibrationRoll;
+  float RateCalibrationYaw;
+} Mpu_Rate_Calibration_t;
+
+typedef struct
+{
+  uint8 ReciverChannel0;
+  uint8 ReciverChannel1;
+  uint8 ReciverChannel2;
+  uint8 ReciverChannel3;
+  uint8 ReciverChannel4;
+  uint8 ReciverChannel5;
+  uint8 ReciverChannel6;
+  uint8 ReciverChannel7;
+  uint8 ReciverChannel8;
+} ReciverChannel_Values_t;
+
+Mpu_Rate_Values_t MpuRateValues;
+Mpu_Rate_Calibration_t MpuRateCalibration;
 int RateCalibrationNumber;
-#include <PulsePosition.h>
-PulsePositionInput ReceiverInput(RISING);
-float ReceiverValue[] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+ReciverChannel_Values_t ReceiverValue;
+
 int ChannelNumber = 0;
 float Voltage, Current, BatteryRemaining, BatteryAtStart;
 float CurrentConsumed = 0;
@@ -116,7 +143,9 @@ void setup()
   Wire.beginTransmission(0x68);
   Wire.write(0x6B);
   Wire.write(0x00);
-  Wire.endTransmission();
+  Wire.beginTransmission(0x8);
+  Wire
+      Wire.endTransmission();
   for (RateCalibrationNumber = 0; RateCalibrationNumber < 2000; RateCalibrationNumber++)
   {
     gyro_signals();
